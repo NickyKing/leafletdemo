@@ -157,6 +157,28 @@
                 /*.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
                 .openPopup();*/
     };
+    var cities = new L.LayerGroup();
+
+    L.marker([0,0]).bindPopup('This is Littleton, CO.').addTo(cities);
+
+
+    var mbAttr = '',
+        mbUrl = '';
+
+    var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+        streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
+
+    var baseLayers = {
+        "Grayscale": grayscale,
+        "Streets": streets
+    };
+
+    var overlays = {
+        "Cities": cities
+    };
+
+    L.control.layers(baseLayers, overlays).addTo(map);
+
     drawLine(data[0].coordy,data[0].coordx,data[1].coordy,data[1].coordx)
     drawLine(data[1].coordy,data[1].coordx,data[2].coordy,data[2].coordx)
     drawLine(data[1].coordy,data[1].coordx,data[4].coordy,data[4].coordx)
@@ -177,7 +199,7 @@
 
         var firstpolyline = new L.Polyline(pointList, {
             color: 'white',
-            weight: 5,
+            weight: 8,
             opacity: 1,
             smoothFactor: 1,
             stroke:true,
