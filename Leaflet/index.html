@@ -18,6 +18,112 @@
 <body>
 <div id="map"></div>
 <script type="text/javascript">
+    var data =[
+        {
+            'icon':'6.png',
+            'coordy':'51',
+            'coordx':'-45',
+            'sizew':'50',
+            'sizeh':'60',
+            'name':'Britannia'
+        },
+        {
+            'icon':'2.png',
+            'coordy':'35',
+            'coordx':'-30',
+            'sizew':'60',
+            'sizeh':'50',
+            'name':'Gallia'
+        },
+        {
+            'icon':'6.png',
+            'coordy':'45',
+            'coordx':'15',
+            'sizew':'50',
+            'sizeh':'60',
+            'name':'Germania'
+        },
+        {
+            'icon':'4.png',
+            'coordy':'13',
+            'coordx':'-3',
+            'sizew':'60',
+            'sizeh':'35',
+            'name':'Massalia'
+        },
+        {
+            'icon':'4.png',
+            'coordy':'3',
+            'coordx':'-25',
+            'sizew':'60',
+            'sizeh':'35',
+            'name':'Mediolanum'
+        },
+        {
+            'icon':'4.png',
+            'coordy':'0',
+            'coordx':'8',
+            'sizew':'60',
+            'sizeh':'35',
+            'name':'Florentia'
+        },
+        {
+            'icon':'8.png',
+            'coordy':'-10',
+            'coordx':'-35',
+            'sizew':'50',
+            'sizeh':'25',
+            'name':'Rough Road'
+        },
+        {
+            'icon':'8.png',
+            'coordy':'-16',
+            'coordx':'-43',
+            'sizew':'50',
+            'sizeh':'25',
+            'name':'Hidden Fortress'
+        },
+        {
+            'icon':'5.png',
+            'coordy':'-20',
+            'coordx':'-12',
+            'sizew':'60',
+            'sizeh':'50',
+            'name':'Shaped Island'
+        },
+        {
+            'icon':'1.png',
+            'coordy':'-25',
+            'coordx':'-55',
+            'sizew':'70',
+            'sizeh':'45',
+            'name':'Rome'
+        },
+        {
+            'icon':'3.png',
+            'coordy':'-25',
+            'coordx':'45',
+            'sizew':'60',
+            'sizeh':'50',
+            'name':'Appian Way'
+        },
+        {
+            'icon':'7.png',
+            'coordy':'-45',
+            'coordx':'28',
+            'sizew':'60',
+            'sizeh':'50',
+            'name':'Etna Volcano'
+        },
+        {
+            'icon':'1.png',
+            'coordy':'-15',
+            'coordx':'22',
+            'sizew':'70',
+            'sizeh':'45',
+            'name':'Union Capital'
+        }
+    ];
     var map = L.map('map', {
         center: [0, 0],
         zoom: 3,
@@ -38,9 +144,49 @@
         },
         errorTileUrl:'http://localhost:63342/Leaflet/js/images/default_bg.jpg'
     }).addTo(map);
-    L.marker([0, 0]).addTo(map)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-            .openPopup();
+    for(i=0;i<data.length;i++){
+        var myIcon = L.icon({
+            iconUrl: 'http://localhost:63342/Leaflet/icons/0102/'+data[i].icon,
+            iconSize: [data[i].sizew,data[i].sizeh],
+            popupAnchor: [-3, -26]
+        });
+        L.marker(
+                [data[i].coordy,data[i].coordx],
+                {icon: myIcon}
+        ).addTo(map)
+                /*.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                .openPopup();*/
+    };
+    drawLine(data[0].coordy,data[0].coordx,data[1].coordy,data[1].coordx)
+    drawLine(data[1].coordy,data[1].coordx,data[2].coordy,data[2].coordx)
+    drawLine(data[1].coordy,data[1].coordx,data[4].coordy,data[4].coordx)
+    drawLine(data[4].coordy,data[4].coordx,data[3].coordy,data[3].coordx)
+    drawLine(data[3].coordy,data[3].coordx,data[5].coordy,data[5].coordx)
+    drawLine(data[4].coordy,data[4].coordx,data[6].coordy,data[6].coordx)
+    drawLine(data[6].coordy,data[6].coordx,data[7].coordy,data[7].coordx)
+    drawLine(data[7].coordy,data[7].coordx,data[9].coordy,data[9].coordx)
+    drawLine(data[4].coordy,data[4].coordx,data[8].coordy,data[8].coordx)
+    drawLine(data[8].coordy,data[8].coordx,data[12].coordy,data[12].coordx)
+    drawLine(data[5].coordy,data[5].coordx,data[12].coordy,data[12].coordx)
+    drawLine(data[12].coordy,data[12].coordx,data[10].coordy,data[10].coordx)
+    drawLine(data[12].coordy,data[12].coordx,data[11].coordy,data[11].coordx)
+    function drawLine(coordy_a,coordx_a,coordy_b,coordx_b){
+        var pointA = new L.LatLng(coordy_a,coordx_a);
+        var pointB = new L.LatLng(coordy_b,coordx_b);
+        var pointList = [pointA, pointB];
+
+        var firstpolyline = new L.Polyline(pointList, {
+            color: 'white',
+            weight: 5,
+            opacity: 1,
+            smoothFactor: 1,
+            stroke:true,
+            fill:true,
+            fillColor:'black',
+            fillOpacity:1
+        });
+        firstpolyline.addTo(map);
+    }
 </script>
 </body>
 </html>
