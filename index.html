@@ -7,16 +7,50 @@
     <link rel="stylesheet" href="css/leaflet.css" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="js/leaflet-custom.js"></script>
-    <script type="text/javascript" src="js/leaflet-custom-src.js"></script>
     <style type="text/css">
+        body{
+            position: relative;
+        }
         #map{
             width: 100%;
             height: 100%;
+        }
+        .maptool{
+            position: absolute;
+            display: block;
+            width: 50px;
+            padding: 5px;
+            right: 10px;
+            top: 10px;
+            z-index: 999;
+        }
+        .maptool img{
+            width: 40px;
+        }
+        .leaflet-popup{
+            z-index: 999;
+        }
+        .leaflet-marker-pane img{
+            z-index: 998 !important;
         }
     </style>
 </head>
 <body>
 <div id="map"></div>
+<div class="maptool">
+    <ul>
+        <li><a href="javascript:;"><img name="bone.png" src="icons/0102/material/bone.png" /></a></li>
+        <li><a href="javascript:;"><img name="claw.png" src="icons/0102/material/claw.png" /></a></li>
+        <li><a href="javascript:;"><img name="cluster.png" src="icons/0102/material/cluster.png" /></a></li>
+        <li><a href="javascript:;"><img name="figure1s.png" src="icons/0102/material/figure1s.png" /></a></li>
+        <li><a href="javascript:;"><img name="figure5s.png" src="icons/0102/material/figure5s.png" /></a></li>
+        <li><a href="javascript:;"><img name="figure6s.png" src="icons/0102/material/figure6s.png" /></a></li>
+        <li><a href="javascript:;"><img name="lamp.png" src="icons/0102/material/lamp.png" /></a></li>
+        <li><a href="javascript:;"><img name="plate.png" src="icons/0102/material/plate.png" /></a></li>
+        <li><a href="javascript:;"><img name="powder.png" src="icons/0102/material/powder.png" /></a></li>
+        <li><a href="javascript:;"><img name="walnut.png" src="icons/0102/material/walnut.png" /></a></li>
+    </ul>
+</div>
 <script type="text/javascript">
     var data =[
         {
@@ -25,7 +59,9 @@
             'coordx':'-45',
             'sizew':'50',
             'sizeh':'60',
-            'name':'Britannia'
+            'name':'Britannia',
+            'materials':'walnut.png',
+            'materialsNum':'8'
         },
         {
             'icon':'2.png',
@@ -33,7 +69,9 @@
             'coordx':'-30',
             'sizew':'60',
             'sizeh':'50',
-            'name':'Gallia'
+            'name':'Gallia',
+            'materials':'plate.png,cluster.png,powder.png,figure1s.png',
+            'materialsNum':'4,3,1,1'
         },
         {
             'icon':'6.png',
@@ -41,7 +79,9 @@
             'coordx':'15',
             'sizew':'50',
             'sizeh':'60',
-            'name':'Germania'
+            'name':'Germania',
+            'materials':'bone.png,claw.png',
+            'materialsNum':'6,1'
         },
         {
             'icon':'4.png',
@@ -49,7 +89,9 @@
             'coordx':'-3',
             'sizew':'60',
             'sizeh':'35',
-            'name':'Massalia'
+            'name':'Massalia',
+            'materials':'plate.png',
+            'materialsNum':'7'
         },
         {
             'icon':'4.png',
@@ -57,7 +99,9 @@
             'coordx':'-25',
             'sizew':'60',
             'sizeh':'35',
-            'name':'Mediolanum'
+            'name':'Mediolanum',
+            'materials':'plate.png,cluster.png,figure5s.png,figure6s.png',
+            'materialsNum':'4,2,1,1'
         },
         {
             'icon':'4.png',
@@ -65,23 +109,9 @@
             'coordx':'8',
             'sizew':'60',
             'sizeh':'35',
-            'name':'Florentia'
-        },
-        {
-            'icon':'8.png',
-            'coordy':'-10',
-            'coordx':'-35',
-            'sizew':'50',
-            'sizeh':'25',
-            'name':'Rough Road'
-        },
-        {
-            'icon':'8.png',
-            'coordy':'-16',
-            'coordx':'-43',
-            'sizew':'50',
-            'sizeh':'25',
-            'name':'Hidden Fortress'
+            'name':'Florentia',
+            'materials':'plate.png',
+            'materialsNum':'9'
         },
         {
             'icon':'5.png',
@@ -89,7 +119,9 @@
             'coordx':'-12',
             'sizew':'60',
             'sizeh':'50',
-            'name':'Shaped Island'
+            'name':'Shaped Island',
+            'materials':'bone.png,powder.png,figure6s.png',
+            'materialsNum':'6,1,1'
         },
         {
             'icon':'1.png',
@@ -97,7 +129,9 @@
             'coordx':'-55',
             'sizew':'70',
             'sizeh':'45',
-            'name':'Rome'
+            'name':'Rome',
+            'materials':'plate.png,cluster.png,powder.png,figure6s.png',
+            'materialsNum':'3,2,1,1'
         },
         {
             'icon':'3.png',
@@ -105,7 +139,9 @@
             'coordx':'45',
             'sizew':'60',
             'sizeh':'50',
-            'name':'Appian Way'
+            'name':'Appian Way',
+            'materials':'plate.png,powder.png,figure6s.png',
+            'materialsNum':'8,1,1'
         },
         {
             'icon':'7.png',
@@ -113,7 +149,9 @@
             'coordx':'28',
             'sizew':'60',
             'sizeh':'50',
-            'name':'Etna Volcano'
+            'name':'Etna Volcano',
+            'materials':'lamp.png',
+            'materialsNum':'6'
         },
         {
             'icon':'1.png',
@@ -121,10 +159,22 @@
             'coordx':'22',
             'sizew':'70',
             'sizeh':'45',
-            'name':'Union Capital'
+            'name':'Union Capital',
+            'materials':'plate.png',
+            'materialsNum':'7'
         }
     ];
-    var map = L.map('map', {
+    L.Map = L.Map.extend({
+        openPopup: function(popup) {
+            //        this.closePopup();  // just comment this
+            this._popup = popup;
+
+            return this.addLayer(popup).fire('popupopen', {
+                popup: this._popup
+            });
+        }
+    });
+    /*var map = L.Map('map', {
         center: [0, 0],
         zoom: 3,
         maxZoom:3,
@@ -133,65 +183,51 @@
         attributionControl:false,
         dragging:false,
         doubleClickZoom:false
-    });
-    L.tileLayer('http://localhost:63342/Leaflet/js/images/{z}_{x}_{y}.jpg',{
-        noWrap: true,
-        tileLimits: {
-            1: { x: 2, y: 2 },
-            2: { x: 4, y: 4 },
-            3: { x: 8, y: 8 },
-            4: { x: 16, y: 16 }
-        },
-        errorTileUrl:'http://localhost:63342/Leaflet/js/images/default_bg.jpg'
+    });*/
+    var map = new L.Map('map',{
+        maxZoom:3,
+        minZoom:3,
+        zoomControl:false,
+        attributionControl:false,
+        dragging:false,
+        doubleClickZoom:false
+    }).setView([0, 0], 3);
+
+    L.tileLayer('js/images/{z}_{x}_{y}.jpg',{
+        errorTileUrl:'js/images/default_bg.jpg'
     }).addTo(map);
-    for(i=0;i<data.length;i++){
+    var markers =[];
+    for(var i=0;i<data.length;i++){
         var myIcon = L.icon({
-            iconUrl: 'http://localhost:63342/Leaflet/icons/0102/'+data[i].icon,
+            iconUrl: 'icons/0102/'+data[i].icon,
             iconSize: [data[i].sizew,data[i].sizeh],
             popupAnchor: [-3, -26]
         });
-        L.marker(
+        var imgArr = data[i].materials.split(',');
+        var numArr = data[i].materialsNum.split(',');
+        var box = '<div class="materialBox"><div class="title">DROP ITEM</div><div class="cont">'
+        for(var j=0;j<imgArr.length;j++){
+            box += '<img style="display:inline-block;width:30px;" src="icons/0102/material/'+imgArr[j]+'"/>';
+        }
+        box +='</div></div>';
+        var marker = L.marker(
                 [data[i].coordy,data[i].coordx],
-                {icon: myIcon}
-        ).addTo(map)
-                /*.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-                .openPopup();*/
+                {icon: myIcon,title:data[i].name}
+        ).addTo(map).bindPopup(box)
+        markers.push(marker)
     };
-    var cities = new L.LayerGroup();
-
-    L.marker([0,0]).bindPopup('This is Littleton, CO.').addTo(cities);
-
-
-    var mbAttr = '',
-        mbUrl = '';
-
-    var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
-        streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
-
-    var baseLayers = {
-        "Grayscale": grayscale,
-        "Streets": streets
-    };
-
-    var overlays = {
-        "Cities": cities
-    };
-
-    L.control.layers(baseLayers, overlays).addTo(map);
 
     drawLine(data[0].coordy,data[0].coordx,data[1].coordy,data[1].coordx)
     drawLine(data[1].coordy,data[1].coordx,data[2].coordy,data[2].coordx)
     drawLine(data[1].coordy,data[1].coordx,data[4].coordy,data[4].coordx)
     drawLine(data[4].coordy,data[4].coordx,data[3].coordy,data[3].coordx)
     drawLine(data[3].coordy,data[3].coordx,data[5].coordy,data[5].coordx)
+    drawLine(data[4].coordy,data[4].coordx,data[7].coordy,data[7].coordx)
     drawLine(data[4].coordy,data[4].coordx,data[6].coordy,data[6].coordx)
-    drawLine(data[6].coordy,data[6].coordx,data[7].coordy,data[7].coordx)
-    drawLine(data[7].coordy,data[7].coordx,data[9].coordy,data[9].coordx)
-    drawLine(data[4].coordy,data[4].coordx,data[8].coordy,data[8].coordx)
-    drawLine(data[8].coordy,data[8].coordx,data[12].coordy,data[12].coordx)
-    drawLine(data[5].coordy,data[5].coordx,data[12].coordy,data[12].coordx)
-    drawLine(data[12].coordy,data[12].coordx,data[10].coordy,data[10].coordx)
-    drawLine(data[12].coordy,data[12].coordx,data[11].coordy,data[11].coordx)
+    drawLine(data[6].coordy,data[6].coordx,data[10].coordy,data[10].coordx)
+    drawLine(data[5].coordy,data[5].coordx,data[10].coordy,data[10].coordx)
+    drawLine(data[10].coordy,data[10].coordx,data[8].coordy,data[8].coordx)
+    drawLine(data[10].coordy,data[10].coordx,data[9].coordy,data[9].coordx)
     function drawLine(coordy_a,coordx_a,coordy_b,coordx_b){
         var pointA = new L.LatLng(coordy_a,coordx_a);
         var pointB = new L.LatLng(coordy_b,coordx_b);
@@ -209,6 +245,24 @@
         });
         firstpolyline.addTo(map);
     }
+    $(function(){
+        $('.maptool a').click(function(){
+            var name = $(this).find('img').attr('name');
+            for(var i=0;i<data.length;i++){
+                var imgArr = data[i].materials.split(',');
+                for(var j=0;j<imgArr.length;j++) {
+                    if(imgArr[j] == name){
+                        for (var k in markers){
+                            var markerID = markers[k].options.title;
+                            if (markerID == data[i].name){
+                                markers[k].openPopup();
+                            };
+                        }
+                    }
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>
