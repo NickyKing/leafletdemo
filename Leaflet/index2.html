@@ -25,27 +25,13 @@
             z-index: 999;
         }
         .maptool img{
-            display: block;
             width: 40px;
-            height: 40px;
         }
         .leaflet-popup{
             z-index: 999;
         }
         .leaflet-marker-pane img{
             z-index: 998 !important;
-        }
-        .materialBox .cont span{
-            position: relative;
-            display: inline-block;
-        }
-        .materialBox em{
-            position: absolute;
-            left: 20px;
-            bottom: 0;
-            color: red;
-            font-weight: bold;
-            font-style: normal;
         }
     </style>
 </head>
@@ -74,113 +60,83 @@
     var data =[
         {
             'icon':'6.png',
-            'coordy':'51',
-            'coordx':'-45',
-            'sizew':'50',
+            'coordy':'-25',
+            'coordx':'-55',
+            'sizew':'60',
             'sizeh':'60',
             'name':'Britannia',
-            'materials':'walnut.png',
-            'materialsNum':'8'
+            'materials':'bone.png',
+            'materialsNum':'7'
         },
         {
             'icon':'2.png',
-            'coordy':'35',
-            'coordx':'-30',
+            'coordy':'5',
+            'coordx':'20',
             'sizew':'60',
             'sizeh':'50',
             'name':'Gallia',
-            'materials':'plate.png,cluster.png,powder.png,figure1s.png',
-            'materialsNum':'4,3,1,1'
-        },
-        {
-            'icon':'6.png',
-            'coordy':'45',
-            'coordx':'15',
-            'sizew':'50',
-            'sizeh':'60',
-            'name':'Germania',
-            'materials':'bone.png,claw.png',
-            'materialsNum':'6,1'
-        },
-        {
-            'icon':'4.png',
-            'coordy':'13',
-            'coordx':'-3',
-            'sizew':'60',
-            'sizeh':'35',
-            'name':'Massalia',
-            'materials':'plate.png',
+            'materials':'bone.png',
             'materialsNum':'7'
         },
         {
             'icon':'4.png',
-            'coordy':'3',
-            'coordx':'-25',
+            'coordy':'-2',
+            'coordx':'-40',
             'sizew':'60',
             'sizeh':'35',
-            'name':'Mediolanum',
-            'materials':'plate.png,cluster.png,figure5s.png,figure6s.png',
-            'materialsNum':'4,2,1,1'
-        },
-        {
-            'icon':'4.png',
-            'coordy':'0',
-            'coordx':'8',
-            'sizew':'60',
-            'sizeh':'35',
-            'name':'Florentia',
-            'materials':'plate.png',
-            'materialsNum':'9'
+            'name':'Massalia',
+            'materials':'bone.png,powder.png,figure3s.png,figure7s.png',
+            'materialsNum':'6,2,1,1'
         },
         {
             'icon':'5.png',
-            'coordy':'-20',
-            'coordx':'-12',
+            'coordy':'12',
+            'coordx':'-57',
             'sizew':'60',
             'sizeh':'50',
             'name':'Shaped Island',
-            'materials':'bone.png,powder.png,figure6s.png',
+            'materials':'tooth.png,powder.png,figure1s.png',
             'materialsNum':'6,1,1'
         },
         {
             'icon':'1.png',
             'coordy':'-25',
-            'coordx':'-55',
+            'coordx':'-18',
             'sizew':'70',
             'sizeh':'45',
             'name':'Rome',
-            'materials':'plate.png,cluster.png,powder.png,figure6s.png',
-            'materialsNum':'3,2,1,1'
+            'materials':'bone.png',
+            'materialsNum':'5'
         },
         {
             'icon':'3.png',
-            'coordy':'-25',
-            'coordx':'45',
+            'coordy':'35',
+            'coordx':'-25',
             'sizew':'60',
             'sizeh':'50',
             'name':'Appian Way',
-            'materials':'plate.png,powder.png,figure6s.png',
-            'materialsNum':'8,1,1'
+            'materials':'bone.png,',
+            'materialsNum':'3'
         },
         {
             'icon':'7.png',
-            'coordy':'-45',
+            'coordy':'42',
             'coordx':'28',
             'sizew':'60',
             'sizeh':'50',
             'name':'Etna Volcano',
-            'materials':'lamp.png',
-            'materialsNum':'6'
+            'materials':'bone.png',
+            'materialsNum':'8'
         },
         {
-            'icon':'1.png',
-            'coordy':'-15',
-            'coordx':'22',
-            'sizew':'70',
-            'sizeh':'45',
-            'name':'Union Capital',
-            'materials':'plate.png',
-            'materialsNum':'7'
+            'icon':'8.png',
+            'coordy':'-22',
+            'coordx':'60',
+            'sizew':'60',
+            'sizeh':'50',
+            'name':'Etna Volcano',
+            'materials':'bone.png,tooth.png,figure5s',
+            'materialsNum':'6,1,1'
         }
     ];
     L.Map = L.Map.extend({
@@ -212,13 +168,13 @@
         doubleClickZoom:false
     }).setView([0, 0], 3);
 
-    L.tileLayer('js/images/1/{z}_{x}_{y}.jpg',{
+    L.tileLayer('js/images/2/{z}_{x}_{y}.jpg',{
         errorTileUrl:'js/images/default_bg.jpg'
     }).addTo(map);
     var markers =[];
     for(var i=0;i<data.length;i++){
         var myIcon = L.icon({
-            iconUrl: 'icons/0102/'+data[i].icon,
+            iconUrl: 'icons/0100/'+data[i].icon,
             iconSize: [data[i].sizew,data[i].sizeh],
             popupAnchor: [-3, -26]
         });
@@ -227,7 +183,7 @@
         if(imgArr != ''){
             var box = '<div class="materialBox"><div class="title">DROP ITEM</div><div class="cont">'
             for(var j=0;j<imgArr.length;j++){
-                box += '<span><img style="display:inline-block;width:30px;" src="icons/material/'+imgArr[j]+'"/><em>'+numArr[j]+'</em></span>';
+                box += '<img style="display:inline-block;width:30px;" src="icons/material/'+imgArr[j]+'"/>';
             }
             box +='</div></div>';
             var marker = L.marker(
@@ -244,24 +200,20 @@
         }
     };
 
-    drawLine(data[0].coordy,data[0].coordx,data[1].coordy,data[1].coordx)
-    drawLine(data[1].coordy,data[1].coordx,data[2].coordy,data[2].coordx)
     drawLine(data[1].coordy,data[1].coordx,data[4].coordy,data[4].coordx)
-    drawLine(data[4].coordy,data[4].coordx,data[3].coordy,data[3].coordx)
-    drawLine(data[3].coordy,data[3].coordx,data[5].coordy,data[5].coordx)
-    drawLine(data[4].coordy,data[4].coordx,data[7].coordy,data[7].coordx)
-    drawLine(data[4].coordy,data[4].coordx,data[6].coordy,data[6].coordx)
-    drawLine(data[6].coordy,data[6].coordx,data[10].coordy,data[10].coordx)
-    drawLine(data[5].coordy,data[5].coordx,data[10].coordy,data[10].coordx)
-    drawLine(data[10].coordy,data[10].coordx,data[8].coordy,data[8].coordx)
-    drawLine(data[10].coordy,data[10].coordx,data[9].coordy,data[9].coordx)
+    drawLine(data[2].coordy,data[2].coordx,data[4].coordy,data[4].coordx)
+    drawLine(data[5].coordy,data[5].coordx,data[4].coordy,data[4].coordx)
+    drawLine(data[3].coordy,data[3].coordx,data[2].coordy,data[2].coordx)
+    drawLine(data[0].coordy,data[0].coordx,data[4].coordy,data[4].coordx)
+    drawLine(data[1].coordy,data[1].coordx,data[7].coordy,data[7].coordx)
+    drawLine(data[1].coordy,data[1].coordx,data[6].coordy,data[6].coordx)
     function drawLine(coordy_a,coordx_a,coordy_b,coordx_b){
         var pointA = new L.LatLng(coordy_a,coordx_a);
         var pointB = new L.LatLng(coordy_b,coordx_b);
         var pointList = [pointA, pointB];
 
         var firstpolyline = new L.Polyline(pointList, {
-            color: 'white',
+            color: '#EC8F19',
             weight: 8,
             opacity: 1,
             smoothFactor: 1,
